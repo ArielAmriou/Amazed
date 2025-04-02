@@ -1,0 +1,173 @@
+name: CI-CD
+
+on:
+  push:
+    branches-ignore:
+      - ga-ignore-*
+
+env:
+  MIRROR_URL: git@github.com:EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-ariel.amriou.git
+  EXECUTABLES: "amazed"
+  LIBRARIES: ""
+  BANNED_FUNCTIONS: "printf,open,puts,fopen,dprintf,strcmp,strdup,strcpy,strlen,strncmp,fprintf,strchr,strtok,strtok_r,scanf"
+  BANNED_LIB: ""
+
+jobs:
+  check_coding_style:
+   name: Check coding-style
+   runs-on: ubuntu-latest
+   defaults:
+     run:
+       shell: bash
+   container: ghcr.io/epitech/coding-style-checker:latest
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
+     - name: Coding-style
+       run: check.sh $(pwd) $(pwd)
+     - name:
+       run: |
+         while read line
+         do
+           TYPE=`echo $line | cut -d ":" -f 3 | cut -c 2-`
+           FILE=`echo $line | cut -d ":" -f 1 | cut -c 3-`
+           LINE=`echo $line | cut -d ":" -f 2`
+           ERROR=`echo $line | cut -d ":" -f 4`
+           echo "::error file=$FILE,line=#$LINE,title=$TYPE coding style error::$ERROR"
+         done < coding-style-reports.log
+         if [ `cat coding-style-reports.log | wc -l` != '0' ]
+         then
+           exit 1
+         fi
+
+  check_program_compilation:
+   name: Check program compilation
+   needs: check_coding_style
+   runs-on: ubuntu-latest
+   defaults:
+     run:
+       shell: bash
+   container: epitechcontent/epitest-docker
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
+     - name: make
+       timeout-minutes: 2
+       run: make
+     - name: clean
+       run: make clean
+     - name: check files
+       run: |
+         IFS=","
+         ERR=0
+         for exec in `echo ${{ env.EXECUTABLES }}`
+         do
+           if [ ! -f "$exec" ]
+           then
+             ERR=1
+             echo "::error::Error: $exec is missing"
+           fi
+           if [ ! -x "$exec" ]
+           then
+             ERR=1
+             echo "::error::Error: $exec is not executable"
+           fi
+         done
+         for exec in `echo ${{ env.LIBRARIES }}`
+         do
+           if [ ! -f "$exec" ]
+           then
+             ERR=1
+             echo "::error::Error: $exec is missing"
+           fi
+         done
+         if [ $ERR != 0 ]
+         then
+           exit 1
+         fi
+
+  check_baned_functions:
+    name: Check for baned functions
+    needs: check_program_compilation
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    container: epitechcontent/epitest-docker
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: make
+        run: make
+      - name: check baned functions
+        run: |
+          IFS=","
+          ERR=0
+          check_lib() {
+            STRINGS=`strings $NAME`
+            for LIB in $BANNED_LIB
+            do
+            if [ `echo $STRINGS | grep -v "^_" | grep -i @$LIB` ]
+            then
+              ERR=1
+              echo "::error::Baned lib used : $LIB in $NAME"
+            fi
+            done
+          }
+          check_func() {
+            STRINGS=`strings $NAME`
+            for FUNCTION in $BANNED_FUNCTIONS
+            do
+            if [ `echo $STRINGS | grep "^$FUNCTION"` ]
+            then
+              ERR=1
+              echo "::error::Baned function used : $FUNCTION in $NAME"
+            fi
+            done
+          }
+          check_baned() {
+            for NAME in $2
+            do
+              $1
+            done
+          }
+          check_baned check_func $EXECUTABLES
+          check_baned check_lib $EXECUTABLES
+          check_baned check_func $LIBRARIES
+          check_baned check_lib $LIBRARIES
+          if [ $ERR != 0 ]
+          then
+            exit 1
+          fi
+
+  run_tests:
+    name: Run tests
+    needs: check_baned_functions
+    runs-on: ubuntu-latest
+    defaults:
+     run:
+       shell: bash
+    container: epitechcontent/epitest-docker
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: make tests_run
+        timeout-minutes: 2
+        run: make tests_run
+
+  push_to_mirror:
+    name: Push to mirror
+    needs: run_tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        if: ${{github.repository}} != ${{env.MIRROR_URL}}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            ${{ env.MIRROR_URL }}
+          ssh_private_key:
+            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
