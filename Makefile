@@ -44,4 +44,6 @@ fclean:	clean
 
 re: fclean all
 
+tests_run:
+
 .PHONY: all debug clean fclean re
