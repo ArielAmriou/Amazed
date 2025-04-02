@@ -41,7 +41,7 @@ int mini_printf(const char *format, ...)
         if (format[i] == '%' && format[i + 1] != 'd' && format[i + 1] != 'i'
         && format[i + 1] != 's' && format[i + 1] != 'c'
         && format[i + 1] != '%')
-            return EPI_ERROR;
+            return EXIT_ERROR;
         if (format[i] == '%') {
             get_flag(format[i + 1], args, &count);
             i++;

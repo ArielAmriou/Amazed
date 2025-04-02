@@ -16,5 +16,5 @@ int help(void)
         mini_printf_error("Error while opening %s file\n", HELP);
     else
         mini_printf("%s", help);
-    return EPI_ERROR;
+    return EXIT_ERROR;
 }
