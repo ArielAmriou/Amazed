@@ -9,6 +9,13 @@ CC ?= gcc
 
 INCLUDE_DIR = include
 
+SRC = 	$(addprefix src/,					\
+			main.c							\
+			parsing/get_input.c				\
+			parsing/is_tunnel.c				\
+			parsing/get_line_type.c			\
+		)
+
 SRC = 	$(addprefix src/, main.c)
 
 OBJ = $(SRC:.c=.o)

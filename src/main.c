@@ -5,7 +5,14 @@
 ** main.c
 */
 
-int main(void)
+#include <stddef.h>
+#include "parsing.h"
+
+int main(int const argc, [[maybe_unused]] char **argv)
 {
-    return 0;
+    if (argc != 1)
+        return EXIT_ERROR;
+    if (get_input() == EXIT_ERROR)
+        return EXIT_ERROR;
+    return EXIT_SUCCESS;
 }

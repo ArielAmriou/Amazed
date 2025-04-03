@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "linked_list.h"
 #include "my.h"
+#include "parsing.h"
 
 int disp_linked_list(linked_list_t **head)
 {
@@ -18,8 +19,7 @@ int disp_linked_list(linked_list_t **head)
         return 84;
     tmp = *head;
     while (tmp != NULL) {
-        if (tmp != NULL && my_strcmp(tmp->line, "") != 0)
-            mini_printf("%s\n", tmp->line);
+        mini_printf("%s\n", tmp->line);
         tmp = tmp->next;
     }
     return 0;
