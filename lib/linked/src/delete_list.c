@@ -33,11 +33,16 @@ void delete_elements(list_t *list, ssize_t index)
 void destroy_list(list_t *list)
 {
     elements_t *current = list->head;
-    int i = 0;
+    elements_t *next = NULL;
 
     while (current) {
-        delete_elements(list, i);
-        i++;
-        current = current->next;
+        next = current->next;
+        if (current->data) {
+            free(current->data);
+        }
+        free(current);
+        current = next;
     }
+    list->head = NULL;
+    list->len = 0;
 }

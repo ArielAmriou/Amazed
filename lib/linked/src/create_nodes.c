@@ -40,13 +40,13 @@ void insert_back(list_t *list, void *data, ssize_t size)
     elements_t *nodes = malloc(sizeof(elements_t));
     elements_t *current = list->head;
 
-    if (!nodes)
-        return;
     nodes->data = malloc(size);
-    if (!nodes->data) {
+    if (!nodes->data || !nodes) {
         free(nodes);
         return;
     }
+    if (!list->head)
+        list->head = nodes;
     my_memcpy(nodes->data, data, size);
     nodes->next = NULL;
     while (current) {
