@@ -16,8 +16,6 @@ SRC = 	$(addprefix src/,					\
 			parsing/get_line_type.c			\
 		)
 
-SRC = 	$(addprefix src/, main.c)
-
 OBJ = $(SRC:.c=.o)
 
 CFLAGS = -Wall -Wextra
