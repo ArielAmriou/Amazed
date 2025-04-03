@@ -2,8 +2,8 @@ name: CI-CD
 
 on:
   push:
-    branches-ignore:
-      - ga-ignore-*
+    branches:
+      - main
 
 env:
   MIRROR_URL: git@github.com:EpitechPGEPromo2029/B-CPE-200-PAR-2-1-amazed-antoine.leroy.git
@@ -165,7 +165,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
+      - name: Push repository
+        uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
             ${{ env.MIRROR_URL }}

@@ -29,14 +29,15 @@ int add_linked_list_rev(linked_list_t **head, char *line)
 
     if (head == NULL || line == NULL)
         return 84;
+    if (line[0] == '\0')
+        return 0;
     if (*head == NULL)
         return add_first(head, line);
     tmp = *head;
     new = malloc(sizeof(linked_list_t));
     if (new == NULL)
         return 84;
-    while (tmp->next != NULL)
-        tmp = tmp->next;
+    for (; tmp->next != NULL; tmp = tmp->next)
     new->next = NULL;
     new->line = my_strdup(line);
     if (new->line == NULL)
