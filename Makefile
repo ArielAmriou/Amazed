@@ -7,6 +7,8 @@
 
 CC ?= gcc
 
+INCLUDE_DIR = include
+
 SRC = 	$(addprefix src/,					\
 			main.c							\
 			parsing/get_input.c				\
