@@ -21,7 +21,8 @@ enum line_type {
     NB_ROBOT,
     ROOMS,
     TUNNELS,
-    COMMAND
+    START,
+    END
 };
 
 int get_input(void);

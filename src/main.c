@@ -5,7 +5,6 @@
 ** main.c
 */
 
-#include <stddef.h>
 #include "parsing.h"
 
 int main(int const argc, [[maybe_unused]] char **argv)

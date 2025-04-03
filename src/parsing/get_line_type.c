@@ -52,8 +52,10 @@ enum line_type get_line_type(char const *line)
     int len = 0;
     enum line_type type = NONE;
 
-    if (line[0] == '#' && line[1] == '#')
-        return COMMAND;
+    if (my_strcmp(line, "##start") == 0)
+        return START;
+    if (my_strcmp(line, "##end") == 0)
+        return END;
     list = my_str_to_word_array(line, "\t ", "");
     if (list == NULL)
         return NONE;

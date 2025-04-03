@@ -56,11 +56,13 @@ static void handle_line(char *line)
 
 static int is_shuffled(enum line_type type, enum line_type prev_type)
 {
-    if (type == COMMAND)
+    if ((type == START || type == END) &&
+        (prev_type == ROOMS || prev_type == NB_ROBOT))
         return 0;
     if (type == NB_ROBOT && prev_type == NONE)
         return 0;
-    if (type == ROOMS && (prev_type == ROOMS || prev_type == NB_ROBOT))
+    if (type == ROOMS && (prev_type == ROOMS || prev_type == NB_ROBOT
+        || prev_type == START || prev_type == END))
         return 0;
     if (type == TUNNELS && (prev_type == TUNNELS || prev_type == ROOMS))
         return 0;
@@ -84,8 +86,7 @@ static int handle_type(char const *line, char const *prev)
     if (type == TUNNELS && prev_type == ROOMS)
         mini_printf("#tunnels\n");
     mini_printf("%s\n", line);
-    if (type != COMMAND)
-        prev_type = type;
+    prev_type = type;
     return EXIT_SUCCESS;
 }
 
