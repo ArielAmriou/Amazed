@@ -14,10 +14,11 @@
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
 
-    #define ARRAY_SIZE(x) (size_t)(sizeof(x) / sizeof(*x))
+    #define ARRAY_SIZE(array) (unsigned int)(sizeof(array) / sizeof(*array))
 
     /* parsing */
     #define COMMENT_CHAR '#'
+    #define END_IDS -1
 
 typedef enum room_type {
     R_NONE,
@@ -49,6 +50,7 @@ typedef struct info_s {
     int id_end;
     char *name_end;
     list_t *rooms;
+    rooms_t *rooms_list;
 } info_t;
 
 typedef struct room_info_s {
@@ -66,9 +68,10 @@ int is_tunnel(char const *line);
 enum line_type get_line_type(char const *line);
 void free_info(info_t *info);
 int put_nb_robot(char const *line, info_t *info);
-int put_tunnels(char const *line, info_t *info);
+int put_tunnels(char *line, info_t *info);
 int put_rooms(char const *line, info_t *info, room_type_t type);
-int end_room(char const *line, info_t *info);
+int end_room(char *line, info_t *info);
 void free_room(void *data);
+int create_room_list(info_t *info);
 
 #endif

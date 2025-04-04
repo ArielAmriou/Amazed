@@ -35,6 +35,7 @@ static info_t *init_info(void)
     info->name_start = NULL;
     info->id_end = -1;
     info->name_end = NULL;
+    info->rooms_list = NULL;
     return info;
 }
 
@@ -105,19 +106,17 @@ static int handle_type(char *line, info_t *info)
 {
     enum line_type type = get_line_type(line);
     static enum line_type prev_type = NONE;
-    static char *prev = NULL;
 
     if (is_shuffled(type, prev_type, info, line) != 0)
         return free_line_info(line, info);
-    if (prev == NULL)
+    if (prev_type == NONE)
         mini_printf("#number_of_robots\n");
     if (type == TUNNELS && prev_type == ROOMS)
         mini_printf("#tunnels\n");
     mini_printf("%s\n", line);
-    if (prev == NULL)
+    if (prev_type == NONE)
         mini_printf("#rooms\n");
     prev_type = type;
-    prev = line;
     return EXIT_SUCCESS;
 }
 

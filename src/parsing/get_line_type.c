@@ -10,7 +10,7 @@
 #include "parsing.h"
 #include "my.h"
 
-static int jump_delim(char *dup)
+static int jump_delim(char const *dup)
 {
     int i = 0;
 
@@ -20,7 +20,7 @@ static int jump_delim(char *dup)
     return i;
 }
 
-static int is_tunnel_type(char *dup)
+static int is_tunnel_type(char const *dup)
 {
     int len = jump_delim(dup);
 
@@ -39,13 +39,6 @@ static enum line_type wich_type(char **list, int const len)
 {
     if (len == 3 && my_is_number(list[1]) == 1 && my_is_number(list[2]) == 1)
         return ROOMS;
-    if (len == 1) {
-        if (my_is_number(list[0]) == 1)
-            return NB_ROBOT;
-        if (is_tunnel_type(list[0]) == 1) {
-            return TUNNELS;
-        }
-    }
     return NONE;
 }
 
@@ -59,6 +52,10 @@ enum line_type get_line_type(char const *line)
         return START;
     if (my_strcmp(line, "##end") == 0)
         return END;
+    if (my_is_number(line) == 1)
+        return NB_ROBOT;
+    if (is_tunnel_type(line) == 1)
+        return TUNNELS;
     list = my_str_to_word_array(line, "\t ", "");
     if (list == NULL)
         return NONE;

@@ -5,7 +5,7 @@
 ** isnumber.c
 */
 
-int my_is_number(char *str)
+int my_is_number(char const *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
         if (str[i] > '9' || str[i] < '0')

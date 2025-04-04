@@ -17,6 +17,10 @@ int main(int const argc, [[maybe_unused]] char **argv)
     info = get_input();
     if (info == NULL)
         return EXIT_ERROR;
+    if (create_room_list(info) == EXIT_ERROR) {
+        free_info(info);
+        return EXIT_ERROR;
+    }
     free_info(info);
     return EXIT_SUCCESS;
 }

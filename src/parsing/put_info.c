@@ -11,12 +11,7 @@
 
 int put_nb_robot(char const *line, info_t *info)
 {
-    char **list = my_str_to_word_array(line, "\t ", "");
-
-    if (list == NULL)
-        return EXIT_ERROR;
-    info->nb_robots = my_getnbr(list[0]);
-    free_list(list);
+    info->nb_robots = my_getnbr(line);
     if (info->nb_robots <= 0)
         return EXIT_ERROR;
     return EXIT_SUCCESS;
@@ -93,32 +88,29 @@ static int room_to_index(char const *name, elements_t *node)
     return -1;
 }
 
-static int fill_indexes(int rooms[2], char **list, info_t *info)
+static int fill_indexes(int rooms[2], char *line, info_t *info)
 {
     char *name = NULL;
 
-    name = my_strdup_delim(list[0], '-');
+    name = my_strdup_delim(line, '-');
     rooms[0] = room_to_index(name, info->rooms->head);
     if (rooms[0] == -1) {
-        free_list(list);
         free(name);
         return EXIT_ERROR;
     }
-    rooms[1] = room_to_index(&(list[0])[my_strlen(name) + 1],
+    rooms[1] = room_to_index(&line[my_strlen(name) + 1],
         info->rooms->head);
     free(name);
-    free_list(list);
     if (rooms[1] == -1)
         return EXIT_ERROR;
     return EXIT_SUCCESS;
 }
 
-int put_tunnels(char const *line, info_t *info)
+int put_tunnels(char *line, info_t *info)
 {
-    char **list = my_str_to_word_array(line, "\t ", "");
     int rooms[2] = {0};
 
-    if (list == NULL || fill_indexes(rooms, list, info) == EXIT_ERROR)
+    if (fill_indexes(rooms, line, info) == EXIT_ERROR)
         return EXIT_ERROR;
     info->matrice[rooms[0]][rooms[1]] = 1;
     info->matrice[rooms[1]][rooms[0]] = 1;
