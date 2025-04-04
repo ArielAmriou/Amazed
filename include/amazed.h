@@ -8,13 +8,12 @@
 #ifndef AMAZED_H_
     #define AMAZED_H_
 
+    #include <stdbool.h>
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
     #define MAZE_ERROR -2
     #define END_LIST -1
-
-#include <stdbool.h>
 
 typedef struct info_maze_s {
     int index_room;

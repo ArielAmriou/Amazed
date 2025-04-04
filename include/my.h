@@ -40,7 +40,7 @@ char **my_str_to_word_array(char const *buffer,
 int my_str_error(char *str);
 void my_putchar_error(char c);
 int my_intlen(int nb);
-int my_is_number(char *str);
+int my_is_number(char const *str);
 int mini_printf(const char *format, ...);
 void free_list(char **list);
 int my_list_len(char **list);
