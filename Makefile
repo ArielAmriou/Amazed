@@ -14,6 +14,7 @@ SRC = 	$(addprefix src/,					\
 			parsing/get_input.c				\
 			parsing/is_tunnel.c				\
 			parsing/get_line_type.c			\
+			algo/find_distance_between_nodes.c \
 		)
 
 OBJ = $(SRC:.c=.o)
