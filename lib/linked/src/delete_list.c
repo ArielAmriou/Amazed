@@ -7,37 +7,16 @@
 
 #include "linked.h"
 
-void delete_elements(list_t *list, ssize_t index)
+void destroy_list(list_t *list, void (*free_func)(void *))
 {
     elements_t *current = list->head;
-    elements_t *before = NULL;
-
-    for (int i = 0; i < list->len; i++) {
-        if (index == i && before == NULL) {
-            list->head = current->next;
-            free(current);
-            list->len--;
-            return;
-        }
-        if (index == i && before != NULL) {
-            before->next = current->next;
-            free(current);
-            list->len--;
-            return;
-        }
-        before = current;
-        current = current->next;
-    }
-}
-
-void destroy_list(list_t *list)
-{
-    elements_t *current = list->head;
-    int i = 0;
+    elements_t *tmp = NULL;
 
     while (current) {
-        delete_elements(list, i);
-        i++;
+        tmp = current;
         current = current->next;
+        free_func(tmp->data);
+        free(tmp);
     }
+    free(list);
 }

@@ -12,7 +12,7 @@ SRC	=		src/create_nodes.c		\
 
 OBJ     =       $(SRC:.c=.o)
 
-NAME    =       linked.a
+NAME    =       liblinked.a
 
 NAME_H 	=		linked.h
 

@@ -11,6 +11,33 @@
 #include "parsing.h"
 #include "my.h"
 
+static int free_line_info(char *line, info_t *info)
+{
+    free(line);
+    free_info(info);
+    return EXIT_ERROR;
+}
+
+static info_t *init_info(void)
+{
+    info_t *info = malloc(sizeof(info_t));
+
+    if (info == NULL)
+        return NULL;
+    info->rooms = create_list();
+    if (info->rooms == NULL) {
+        free(info);
+        return NULL;
+    }
+    info->matrice = NULL;
+    info->nb_robots = -1;
+    info->id_start = -1;
+    info->name_start = NULL;
+    info->id_end = -1;
+    info->name_end = NULL;
+    return info;
+}
+
 static void handle_comment(char *line)
 {
     int i = 0;
@@ -25,25 +52,24 @@ static void handle_comment(char *line)
     }
 }
 
-static int is_empty_line(char *line)
+static int is_empty_line(char *line, info_t *info)
 {
     if (line[0] == '#')
         return EXIT_SUCCESS;
-    if (line[0] == '\n') {
-        free(line);
-        return EXIT_ERROR;
-    }
+    if (line[0] == '\n')
+        return free_line_info(line, info);
     for (int i = 0; line[i] != '\n' && line[i] != '#'; i++)
         if (line[i] != '\t' && line[i] != ' ')
             return EXIT_SUCCESS;
-    free(line);
-    return EXIT_ERROR;
+    return free_line_info(line, info);
 }
 
 static void handle_line(char *line)
 {
     int len = my_strlen(line);
 
+    if (len == 0)
+        return;
     if (line[len - 1] == '\n') {
         line[len - 1] = '\0';
         len = my_strlen(line);
@@ -54,69 +80,73 @@ static void handle_line(char *line)
     }
 }
 
-static int is_shuffled(enum line_type type, enum line_type prev_type)
+static int is_shuffled(line_type_t type,
+    line_type_t prev_type, info_t *info, char *line)
 {
     if ((type == START || type == END) &&
         (prev_type == ROOMS || prev_type == NB_ROBOT))
         return 0;
     if (type == NB_ROBOT && prev_type == NONE)
-        return 0;
-    if (type == ROOMS && (prev_type == ROOMS || prev_type == NB_ROBOT
-        || prev_type == START || prev_type == END))
-        return 0;
-    if (type == TUNNELS && (prev_type == TUNNELS || prev_type == ROOMS))
-        return 0;
+        return put_nb_robot(line, info);
+    if (type == ROOMS && (prev_type == ROOMS || prev_type == NB_ROBOT))
+        return put_rooms(line, info, R_NONE);
+    if (type == ROOMS && prev_type == START)
+        return put_rooms(line, info, R_START);
+    if (type == ROOMS && prev_type == END)
+        return put_rooms(line, info, R_END);
+    if (type == TUNNELS && prev_type == ROOMS)
+        return end_room(line, info);
+    if (type == TUNNELS && prev_type == TUNNELS)
+        return put_tunnels(line, info);
     return 1;
 }
 
-static int handle_type(char const *line, char const *prev)
+static int handle_type(char *line, info_t *info)
 {
     enum line_type type = get_line_type(line);
     static enum line_type prev_type = NONE;
+    static char *prev = NULL;
 
-    if (is_shuffled(type, prev_type) == 1)
-        return EXIT_ERROR;
-    if (prev == NULL) {
+    if (is_shuffled(type, prev_type, info, line) != 0)
+        return free_line_info(line, info);
+    if (prev == NULL)
         mini_printf("#number_of_robots\n");
-        mini_printf("%s\n", line);
-        mini_printf("#rooms\n");
-        prev_type = type;
-        return EXIT_SUCCESS;
-    }
     if (type == TUNNELS && prev_type == ROOMS)
         mini_printf("#tunnels\n");
     mini_printf("%s\n", line);
+    if (prev == NULL)
+        mini_printf("#rooms\n");
     prev_type = type;
+    prev = line;
     return EXIT_SUCCESS;
 }
 
-static int check_error(char *line)
+static int check_error(char *line, info_t *info)
 {
-    if (is_empty_line(line) == EXIT_ERROR)
+    if (is_empty_line(line, info) == EXIT_ERROR)
         return EXIT_ERROR;
     handle_comment(line);
     handle_line(line);
     return EXIT_SUCCESS;
 }
 
-int get_input(void)
+info_t *get_input(void)
 {
     char *line = NULL;
     size_t size = 0;
-    char *prev = NULL;
+    info_t *info = init_info();
 
+    if (info == NULL)
+        return NULL;
     while (getline(&line, &size, stdin) != EOF) {
-        if (check_error(line) == EXIT_ERROR)
-            return EXIT_ERROR;
+        if (check_error(line, info) == EXIT_ERROR)
+            return NULL;
         if (line[0] == '\0')
             continue;
-        if (is_empty_line(line) == EXIT_ERROR ||
-            handle_type(line, prev) == EXIT_ERROR)
-            return EXIT_ERROR;
-        prev = line;
+        if (is_empty_line(line, info) == EXIT_ERROR ||
+            handle_type(line, info) == EXIT_ERROR)
+            return NULL;
     }
     free(line);
-    if (prev == NULL)
-        return EXIT_ERROR;
-    return EXIT_SUCCESS;
+    return info;
 }

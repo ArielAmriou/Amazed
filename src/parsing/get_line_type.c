@@ -10,38 +10,41 @@
 #include "parsing.h"
 #include "my.h"
 
+static int jump_delim(char *dup)
+{
+    int i = 0;
+
+    while (dup[i] != '-' && dup[i] != '\0') {
+        i++;
+    }
+    return i;
+}
+
 static int is_tunnel_type(char *dup)
 {
-    int tmp = 0;
+    int len = jump_delim(dup);
 
-    tmp = my_getnbr(dup);
-    if (tmp == -1)
+    if (len == 0)
         return 0;
-    dup += my_intlen(tmp);
+    dup += len;
     if (dup[0] != '-')
         return 0;
     ++dup;
-    tmp = my_getnbr(dup);
-    if (tmp == -1)
+    if (dup[0] == '\0')
         return 0;
     return 1;
 }
 
 static enum line_type wich_type(char **list, int const len)
 {
-    char *dup = NULL;
-
     if (len == 3 && my_is_number(list[1]) == 1 && my_is_number(list[2]) == 1)
         return ROOMS;
     if (len == 1) {
         if (my_is_number(list[0]) == 1)
             return NB_ROBOT;
-        dup = my_strdup(list[0]);
-        if (is_tunnel_type(dup) == 1) {
-            free(dup);
+        if (is_tunnel_type(list[0]) == 1) {
             return TUNNELS;
         }
-        free(dup);
     }
     return NONE;
 }
