@@ -11,6 +11,8 @@
     #include <stdio.h>
     #include <sys/types.h>
     #include <stdbool.h>
+    #include <stdlib.h>
+    #include <string.h>
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
@@ -38,6 +40,19 @@ typedef struct robot_s {
     bool arrived_printed;
 } robot_t;
 
-int find_distances(int start_index, int end_index, rooms_t *room, int index_room,
-    int distance, int last_index);
+//SET ROBOT
+ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots);
+robot_t **init_robot_tab(size_t nb_robots);
+void free_robots(robot_t **robot_tabs, size_t nb_robots);
+
+size_t move_robots(rooms_t **rooms, robot_t **robot_tabs, size_t nb_robots);
+
+//UTILS
+void print_list_int(int *list);
+void print_table(rooms_t **rooms, size_t end);
+void print_robot_tabs(robot_t **robot_tabs);
+
+int find_distances(int start_index, int end_index,
+    rooms_t *room, int index_room, int distance, int last_index);
+
 #endif
