@@ -30,7 +30,7 @@ static void print_robot(robot_t **robot_tabs,
 {
     if (robot_tabs[index_robot]->step != 0 &&
     !robot_tabs[index_robot]->arrived_printed) {
-        printf("P%ld-%s ",
+        mini_printf("P%d-%s ",
             robot_tabs[index_robot]->robot,
             rooms[robot_tabs[index_robot]->index_room]->name);
     }
@@ -87,7 +87,7 @@ size_t move_robots(rooms_t **rooms, robot_t **robot_tabs, size_t nb_robots)
             print_robot(robot_tabs, index_robot, rooms);
             index_robot++;
         }
-        printf("\n");
+        mini_printf("\n");
     }
     free_robots(robot_tabs, nb_robots);
     return 0;

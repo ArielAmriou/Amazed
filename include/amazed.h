@@ -34,7 +34,7 @@ typedef struct rooms_s {
 
 typedef struct robot_s {
     ssize_t step;
-    ssize_t robot;
+    int robot;
     ssize_t index_room;
     bool arrived;
     bool arrived_printed;
