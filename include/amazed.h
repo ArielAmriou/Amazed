@@ -7,7 +7,9 @@
 
 #ifndef AMAZED_H_
     #define AMAZED_H_
-
+    #include <stddef.h>
+    #include <stdio.h>
+    #include <sys/types.h>
     #include <stdbool.h>
     /* return values */
     #define EXIT_ERROR 84
@@ -27,6 +29,14 @@ typedef struct rooms_s {
     int *links;
     bool occupied;
 } rooms_t;
+
+typedef struct robot_s {
+    ssize_t step;
+    ssize_t robot;
+    ssize_t index_room;
+    bool arrived;
+    bool arrived_printed;
+} robot_t;
 
 int find_distances(int start_index, int end_index, rooms_t *room, int index_room,
     int distance, int last_index);
