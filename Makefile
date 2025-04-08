@@ -23,6 +23,9 @@ SRC = 	$(addprefix src/,					\
 			move_robots/move_robot.c		\
 			move_robots/set_robots.c		\
 			move_robots/utils.c				\
+			algo/find_distance_between_nodes.c \
+			algo/init_maze.c				\
+			amazed.c						\
 		)
 
 OBJ = $(SRC:.c=.o)
