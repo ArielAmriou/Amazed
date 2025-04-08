@@ -12,13 +12,13 @@
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
-    #define MAZE_ERROR -2
+    #define DEAD_END -2
     #define END_LIST -1
 
 typedef struct info_maze_s {
-    int index_room;
-    int origin;
-    int distance;
+    int start;
+    int end;
+    int last_index;
 }info_maze_t;
 
 typedef struct rooms_s {
@@ -28,6 +28,7 @@ typedef struct rooms_s {
     bool occupied;
 } rooms_t;
 
-int find_distances(int start_index, int end_index, rooms_t *room, int index_room,
-    int distance, int last_index);
+int algo_dist(info_maze_t *infos, rooms_t *room,
+    const int index_room, const ssize_t nb_rooms);
+info_maze_t *init_maze(info_maze_t *maze, int end_index, int start_index);
 #endif

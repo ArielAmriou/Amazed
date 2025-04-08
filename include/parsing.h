@@ -9,6 +9,7 @@
     #define PARSING_H_
     #include <stdbool.h>
     #include "linked.h"
+    #include "amazed.h"
 
     /* return values */
     #define EXIT_ERROR 84
@@ -35,12 +36,7 @@ typedef enum line_type {
     END
 } line_type_t;
 
-typedef struct rooms_s {
-    char *name;
-    int distance;
-    int *links;
-    bool occupied;
-} rooms_t;
+typedef struct rooms_s rooms_t;
 
 typedef struct info_s {
     int nb_robots;

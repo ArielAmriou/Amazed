@@ -15,6 +15,7 @@ SRC = 	$(addprefix src/,					\
 			parsing/is_tunnel.c				\
 			parsing/get_line_type.c			\
 			algo/find_distance_between_nodes.c \
+			algo/init_maze.c				\
 			parsing/free_info.c				\
 			parsing/put_info.c				\
 			parsing/end_room.c				\

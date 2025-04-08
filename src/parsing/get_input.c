@@ -86,7 +86,7 @@ static int is_shuffled(line_type_t type,
 {
     if ((type == START || type == END) &&
         (prev_type == ROOMS || prev_type == NB_ROBOT))
-        return 0;
+        return EXIT_SUCCESS;
     if (type == NB_ROBOT && prev_type == NONE)
         return put_nb_robot(line, info);
     if (type == ROOMS && (prev_type == ROOMS || prev_type == NB_ROBOT))
@@ -99,7 +99,7 @@ static int is_shuffled(line_type_t type,
         return end_room(line, info);
     if (type == TUNNELS && prev_type == TUNNELS)
         return put_tunnels(line, info);
-    return 1;
+    return EXIT_ERROR;
 }
 
 static int handle_type(char *line, info_t *info)
