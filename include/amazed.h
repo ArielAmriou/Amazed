@@ -52,7 +52,4 @@ void print_list_int(int *list);
 void print_table(rooms_t **rooms, size_t end);
 void print_robot_tabs(robot_t **robot_tabs);
 
-int find_distances(int start_index, int end_index,
-    rooms_t *room, int index_room, int distance, int last_index);
-
 #endif

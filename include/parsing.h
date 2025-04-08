@@ -62,16 +62,33 @@ typedef struct room_info_s {
     int y;
 } room_info_t;
 
-
 info_t *get_input(void);
 int is_tunnel(char const *line);
 enum line_type get_line_type(char const *line);
 void free_info(info_t *info);
-int put_nb_robot(char const *line, info_t *info);
+int put_nb_robot(char *line, info_t *info);
 int put_tunnels(char *line, info_t *info);
-int put_rooms(char const *line, info_t *info, room_type_t type);
 int end_room(char *line, info_t *info);
 void free_room(void *data);
 int create_room_list(info_t *info);
+int put_room_end(char *line, info_t *info);
+int put_room_start(char *line, info_t *info);
+int put_room(char *line, info_t *info);
+
+typedef struct allowed_s {
+    line_type_t type;
+    line_type_t prev_type;
+    int (*func)(char *line, info_t *info);
+} allowed_t;
+
+static const allowed_t allowed_list[] = {
+    {NB_ROBOT, NONE, &put_nb_robot},
+    {ROOMS, NB_ROBOT, &put_room},
+    {ROOMS, ROOMS, &put_room},
+    {ROOMS, START, &put_room_start},
+    {ROOMS, END, &put_room_end},
+    {TUNNELS, ROOMS, &end_room},
+    {TUNNELS, TUNNELS, &put_tunnels}
+};
 
 #endif
