@@ -71,7 +71,8 @@ static void choose_room(robot_t **robot_tabs, size_t index_robot,
     change_room(robot_tabs, index_robot, save_room);
 }
 
-size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots)
+size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots,
+    info_t *info)
 {
     ssize_t index_robot = 0;
 
@@ -89,6 +90,6 @@ size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots)
         }
         mini_printf("\n");
     }
-    free_robots(robot_tabs, nb_robots);
+    free_robots(robot_tabs, nb_robots, info);
     return 0;
 }

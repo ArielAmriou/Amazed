@@ -7,6 +7,7 @@
 
 #include "amazed.h"
 #include "my.h"
+#include "parsing.h"
 
 ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots)
 {
@@ -44,12 +45,14 @@ robot_t **init_robot_tab(size_t nb_robots)
     return robot_tabs;
 }
 
-void free_robots(robot_t **robot_tabs, size_t nb_robots)
+void free_robots(robot_t **robot_tabs, size_t nb_robots, info_t *infos)
 {
     if (!robot_tabs)
         return;
-    for (size_t i = 0; i < nb_robots; i++) {
+    for (size_t i = 0; i <= nb_robots; i++) {
         if (robot_tabs[i])
             free(robot_tabs[i]);
     }
+    free(robot_tabs);
+    free_info(infos);
 }

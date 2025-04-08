@@ -109,8 +109,11 @@ int algo_dist(info_maze_t *infos, rooms_t *room,
 {
     info_maze_t *cpy = infos;
 
-    if (check_dead_end(cpy, room, nb_rooms) == MAZE_ERROR)
+    if (check_dead_end(cpy, room, nb_rooms) == MAZE_ERROR) {
+        free(infos);
         return EXIT_ERROR;
+    }
     find_distances(infos, room, index_room, 0);
+    free(infos);
     return EXIT_SUCCESS;
 }

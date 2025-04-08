@@ -24,7 +24,7 @@ static int init_algo(info_t *info)
         info->id_end, info->rooms->len) == EXIT_ERROR)
         return EXIT_ERROR;
     robots = init_robot_tab(info->nb_robots);
-    return move_robots(info->rooms_list, robots, info->nb_robots);
+    return move_robots(info->rooms_list, robots, info->nb_robots, info);
 }
 
 static int parse_it(void)

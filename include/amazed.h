@@ -20,6 +20,7 @@
     #define DEAD_END -2
     #define END_LIST -1
 
+typedef struct info_s info_t;
 typedef struct info_maze_s {
     int start;
     int end;
@@ -44,9 +45,9 @@ typedef struct robot_s {
 //SET ROBOT
 ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots);
 robot_t **init_robot_tab(size_t nb_robots);
-void free_robots(robot_t **robot_tabs, size_t nb_robots);
-
-size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots);
+void free_robots(robot_t **robot_tabs, size_t nb_robots, info_t *infos);
+size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots,
+    info_t *info);
 //UTILS
 void print_list_int(int *list);
 void print_table(rooms_t *rooms, size_t end);
