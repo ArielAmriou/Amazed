@@ -23,6 +23,7 @@ SRC = 	$(addprefix src/,					\
 			parsing/put_info.c				\
 			parsing/end_room.c				\
 			parsing/create_room_list.c		\
+			amazed.c						\
 		)
 
 OBJ = $(SRC:.c=.o)

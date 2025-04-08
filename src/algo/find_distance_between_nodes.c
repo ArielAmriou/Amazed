@@ -28,7 +28,7 @@ static int nb_links(rooms_t *rooms,
     if (len == 0 && (index_room == last_index ||
         index_room == start_index)) {
         mini_printf_error("There is no valid path from start to exit.\n");
-        return EXIT_ERROR;
+        return MAZE_ERROR;
     }
     return len;
 }
@@ -48,17 +48,22 @@ static void find_start_dead_end(rooms_t *room, const int j)
         room[j].distance = DEAD_END;
 }
 
-static void check_dead_end(const info_maze_t *infos, rooms_t *room,
+static int check_dead_end(const info_maze_t *infos, rooms_t *room,
     const ssize_t nb_rooms)
 {
+    int number_of_links = 0;
+
     for (int i = 0; i < nb_rooms; i++) {
-        if (nb_links(room, infos->last_index,
-            infos->start, i) == DEAD_END) {
+        number_of_links = nb_links(room, infos->last_index,
+            infos->start, i);
+        if (number_of_links == DEAD_END)
             room[i].distance = DEAD_END;
-        }
+        if (number_of_links == MAZE_ERROR)
+            return MAZE_ERROR;
     }
     for (int j = 0; j < nb_rooms; j++)
         find_start_dead_end(room, j);
+    return EXIT_SUCCESS;
 }
 
 static bool break_loop(const info_maze_t *infos, rooms_t *room,
@@ -68,7 +73,7 @@ static bool break_loop(const info_maze_t *infos, rooms_t *room,
         return true;
     if (index_room == infos->start) {
         if (room[index_room].distance > distance ||
-            room[index_room].distance == 0) {
+            room[index_room].distance == END_LIST) {
             room[index_room].distance = distance;
             room[infos->last_index].distance = distance - 1;
         }
@@ -82,7 +87,7 @@ static bool break_loop(const info_maze_t *infos, rooms_t *room,
 }
 
 static void find_distances(info_maze_t *infos, rooms_t *room,
-     int index_room, int distance)
+    int index_room, int distance)
 {
     if (break_loop(infos, room, index_room, distance))
         return;
@@ -92,6 +97,8 @@ static void find_distances(info_maze_t *infos, rooms_t *room,
         if (room[index_room].distance > distance ||
             room[index_room].distance == END_LIST)
             room[index_room].distance = distance;
+        else
+            continue;
         infos->last_index = index_room;
         find_distances(infos, room, room[index_room].links[i], distance += 1);
     }
@@ -102,8 +109,8 @@ int algo_dist(info_maze_t *infos, rooms_t *room,
 {
     info_maze_t *cpy = infos;
 
-    check_dead_end(cpy, room, nb_rooms);
+    if (check_dead_end(cpy, room, nb_rooms) == MAZE_ERROR)
+        return EXIT_ERROR;
     find_distances(infos, room, index_room, 0);
-    free(infos);
     return EXIT_SUCCESS;
 }
