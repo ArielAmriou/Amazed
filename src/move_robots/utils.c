@@ -14,14 +14,12 @@ void print_list_int(int *list)
         mini_printf("[ %d ]", list[i]);
 }
 
-void print_table(rooms_t **rooms, size_t end)
+void print_table(rooms_t *rooms, size_t end)
 {
-    if (!rooms || !rooms[0])
-        return;
-    for (size_t i = 0; i < end; i++) {
+    for (int i = 0; i < end; i++) {
         mini_printf("ROOM => %s, distance %d, status %d links => ",
-            rooms[i]->name, rooms[i]->distance, rooms[i]->occupied);
-        print_list_int(rooms[i]->links);
+            rooms[i].name, rooms[i].distance, rooms[i].occupied);
+        print_list_int(rooms[i].links);
         mini_printf("\n");
     }
 }
