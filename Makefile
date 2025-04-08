@@ -60,6 +60,7 @@ fclean:	clean
 
 re: fclean all
 
-tests_run:
+tests_run: all
+	./tests/cmp.sh
 
-.PHONY: all debug clean fclean re
+.PHONY: all debug clean fclean re tests_run

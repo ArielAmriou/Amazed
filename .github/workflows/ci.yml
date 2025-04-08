@@ -153,7 +153,11 @@ jobs:
         uses: actions/checkout@v4
       - name: make tests_run
         timeout-minutes: 2
-        run: make tests_run
+        run: |
+          if [ "$(make tests_run ; echo $?)" != "0" ]
+          then
+            exit 1
+          fi
 
   push_to_mirror:
     name: Push to mirror

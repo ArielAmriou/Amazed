@@ -43,7 +43,8 @@ static void handle_comment(char *line)
 {
     int i = 0;
 
-    if (my_strcmp(line, "##start") == 0 || my_strcmp(line, "##end") == 0)
+    if (my_strcmp(line, START_COMMAND) == 0 ||
+        my_strcmp(line, END_COMMAND) == 0)
         return;
     while (line[i] != '\0' && line[i] != COMMENT_CHAR)
         i++;

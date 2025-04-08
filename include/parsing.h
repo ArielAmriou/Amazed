@@ -18,6 +18,8 @@
 
     /* parsing */
     #define COMMENT_CHAR '#'
+    #define START_COMMAND "##start"
+    #define END_COMMAND "##end"
     #define END_IDS -1
 
 typedef enum room_type {
