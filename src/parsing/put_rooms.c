@@ -9,14 +9,6 @@
 #include "parsing.h"
 #include "my.h"
 
-int put_nb_robot(char const *line, info_t *info)
-{
-    info->nb_robots = my_getnbr(line);
-    if (info->nb_robots <= 0)
-        return EXIT_ERROR;
-    return EXIT_SUCCESS;
-}
-
 static int is_room_error(elements_t *node, room_info_t *new_room)
 {
     room_info_t *tmp = NULL;
@@ -51,7 +43,7 @@ static int put_room_data(room_info_t *data, char **list, room_type_t type)
     return EXIT_SUCCESS;
 }
 
-int put_rooms(char const *line, info_t *info, room_type_t type)
+static int put_rooms(char const *line, info_t *info, room_type_t type)
 {
     char **list = my_str_to_word_array(line, "\t ", "");
     room_info_t *data = NULL;
@@ -73,46 +65,17 @@ int put_rooms(char const *line, info_t *info, room_type_t type)
     return EXIT_SUCCESS;
 }
 
-static int room_to_index(char const *name, elements_t *node)
+int put_room_end(char *line, info_t *info)
 {
-    room_info_t *data = NULL;
-
-    if (name == NULL)
-        return -1;
-    while (node != NULL) {
-        data = (room_info_t *)node->data;
-        if (my_strcmp(name, data->name) == 0)
-            return data->id;
-        node = node->next;
-    }
-    return -1;
+    return put_rooms(line, info, R_END);
 }
 
-static int fill_indexes(int rooms[2], char *line, info_t *info)
+int put_room_start(char *line, info_t *info)
 {
-    char *name = NULL;
-
-    name = my_strdup_delim(line, '-');
-    rooms[0] = room_to_index(name, info->rooms->head);
-    if (rooms[0] == -1) {
-        free(name);
-        return EXIT_ERROR;
-    }
-    rooms[1] = room_to_index(&line[my_strlen(name) + 1],
-        info->rooms->head);
-    free(name);
-    if (rooms[1] == -1)
-        return EXIT_ERROR;
-    return EXIT_SUCCESS;
+    return put_rooms(line, info, R_START);
 }
 
-int put_tunnels(char *line, info_t *info)
+int put_room(char *line, info_t *info)
 {
-    int rooms[2] = {0};
-
-    if (fill_indexes(rooms, line, info) == EXIT_ERROR)
-        return EXIT_ERROR;
-    info->matrice[rooms[0]][rooms[1]] = 1;
-    info->matrice[rooms[1]][rooms[0]] = 1;
-    return EXIT_SUCCESS;
+    return put_rooms(line, info, R_NONE);
 }

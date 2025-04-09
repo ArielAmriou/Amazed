@@ -35,8 +35,13 @@ static int is_tunnel_type(char const *dup)
     return 1;
 }
 
-static enum line_type wich_type(char **list, int const len)
+static enum line_type is_room(char **list, int const len, char const *line)
 {
+    int strlen = my_strlen(line);
+    bool is_end_delim = line[strlen - 1] == ' ' || line[strlen - 1] == '\t';
+
+    if (is_end_delim == true && len == 2 && my_is_number(list[1]) == 1)
+        return ROOMS;
     if (len == 3 && my_is_number(list[1]) == 1 && my_is_number(list[2]) == 1)
         return ROOMS;
     return NONE;
@@ -60,7 +65,7 @@ enum line_type get_line_type(char const *line)
     if (list == NULL)
         return NONE;
     len = my_list_len(list);
-    type = wich_type(list, len);
+    type = is_room(list, len, line);
     free_list(list);
     return type;
 }

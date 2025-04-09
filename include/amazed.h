@@ -45,6 +45,8 @@ ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots);
 robot_t **init_robot_tab(size_t nb_robots);
 void free_robots(robot_t **robot_tabs, size_t nb_robots);
 
+rooms_t **convert_room(rooms_t *rooms, size_t nb_rooms);
+rooms_t *subject(void);
 size_t move_robots(rooms_t **rooms, robot_t **robot_tabs, size_t nb_robots);
 
 //UTILS

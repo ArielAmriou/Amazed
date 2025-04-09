@@ -5,126 +5,115 @@
 ** find_distance_between_nodes
 */
 
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "amazed.h"
+#include "my.h"
 
-static int len_int(int *arr)
+static int nb_links(rooms_t *rooms,
+    int last_index, int start_index, int index_room)
 {
     int len = 0;
 
-    if (arr == NULL)
+    if (rooms[index_room].links == NULL)
         return len;
-    for (int i = 0; arr[i] != -1; i++)
-        len++;
+    for (int i = 0; rooms[index_room].links[i] != END_LIST; i++) {
+        len += 1;
+        if (len > 1)
+            return len;
+    }
+    if (len == 1 && index_room != last_index && index_room != start_index)
+        return DEAD_END;
+    if (len == 0 && (index_room == last_index ||
+        index_room == start_index)) {
+        mini_printf_error("There is no valid path from start to exit.\n");
+        return MAZE_ERROR;
+    }
     return len;
 }
 
-int find_distances(int start_index, int end_index, rooms_t *room, int index_room,
-    int distance, int origin)
+static void find_start_dead_end(rooms_t *room, const int j)
 {
-    //printf("Distance : %d , Room ID : %d", distance, index_room);
-    if (index_room == start_index) {
-        if (room[index_room].distance > distance)
-            room[index_room].distance = distance;
-        if (room[index_room].distance <= 0)
-            room[index_room].distance = distance;
-      //  printf(", END START INDEX\n");
-        return distance;
+    bool dead_end = false;
+
+    for (int i = 0; room[j].links[i] != END_LIST; i++) {
+        if (room[room[j].links[i]].distance == DEAD_END) {
+            dead_end = true;
+            room[j].distance = DEAD_END;
+        } else
+            dead_end = false;
     }
-    if (distance != 0 && index_room == end_index) {
-        room[end_index].distance = 0;
-        //printf(", END LAST INDEX\n");
-        return distance;
-    }
-    if (room[index_room].distance > 0 && room[index_room].distance < distance) {
-        //printf(", END : chemin + court trouvé\n");
-        return room[index_room].distance;
-    }
-    distance += 1;
-   // printf(", Distance après up : %d\n", distance);
-    for (int i = 0; room[index_room].links[i] != END_LIST; i++) {
-        /*if (index_room != end_index && len_int(room[index_room].links) == 0 ||
-            room[index_room].distance == -2) {
-            room[index_room].distance = -2;
-            return -2;
-            }*/
-        if (i == origin)
-            continue;
-        if (room[index_room].links[i] == END_LIST)
-            origin = index_room;
-        room[index_room].distance = distance;
-        find_distances(start_index, end_index, room, room[index_room].links[i], distance, origin);
-    }
-    return distance;
+    if (dead_end)
+        room[j].distance = DEAD_END;
 }
 
-int main(void)
+static int check_dead_end(const info_maze_t *infos, rooms_t *room,
+    const ssize_t nb_rooms)
 {
-    int start_index = 0;
-    int last_index = 3;
-    info_maze_t *infos = malloc(sizeof(info_maze_t));
-    rooms_t *rooms = malloc(sizeof(rooms_t) * (4 + 1));
+    int number_of_links = 0;
 
-    rooms[0].links = malloc(sizeof(int) * 2);
-    rooms[0].links[0] = 1;
-    rooms[0].links[1] = -1;
-    rooms[0].name = strdup("START");
-    rooms[1].links = malloc(sizeof(int) * 4);
-    rooms[1].links[0] = 4;
-    rooms[1].links[1] = 2;
-    rooms[1].links[2] = 0;
-    rooms[1].links[3] = -1;
-    rooms[1].name = strdup("ROOM 1");
-    rooms[2].links = malloc(sizeof(int) * 3);
-    rooms[2].links[0] = last_index;
-    rooms[2].links[1] = 1;
-    rooms[2].links[2] = -1;
-    rooms[2].name = strdup("ROOM 2");
-    rooms[4].links = malloc(sizeof(int) * 3);
-    rooms[4].links[0] = last_index;
-    rooms[4].links[1] = 1;
-    rooms[4].links[2] = -1;
-    rooms[4].name = strdup("ROOM 4");
-    rooms[last_index].links = malloc(sizeof(int) * 3);
-    rooms[last_index].links[0] = 2;
-    rooms[last_index].links[1] = 4;
-    rooms[last_index].links[2] = -1;
-    rooms[last_index].name = strdup("END");
-    infos->distance = 0;
-    infos->index_room = last_index;
-    infos->origin = last_index;
-    for (int i = 0; i < last_index; i++) {
-        rooms[i].distance = 0;
-        rooms[i].occupied = false;
+    for (int i = 0; i < nb_rooms; i++) {
+        number_of_links = nb_links(room, infos->last_index,
+            infos->start, i);
+        if (number_of_links == DEAD_END)
+            room[i].distance = DEAD_END;
+        if (number_of_links == MAZE_ERROR)
+            return MAZE_ERROR;
     }
-    //last_index = index de la fin du tableau
-    find_distances(start_index, last_index, rooms, infos->index_room, infos->distance, infos->origin);
-    int last_dist = -2;
-    int saved_index = 0;
-//    for (int i = 0; i <= last_index; i++) {
-    int index = rooms[0].links[0];
-        for (int j = 0; rooms[index].links[j] != -1; j++) {
-            if (last_dist == -2)
-                last_dist = rooms[index].distance;
-            if (rooms[index].distance <= last_dist) {
-                last_dist = rooms[index].distance;
-                saved_index = rooms[index].links[j];
-            }
-            printf("%s\n", rooms[index].name);
-            index = saved_index;
+    for (int j = 0; j < nb_rooms; j++)
+        find_start_dead_end(room, j);
+    return EXIT_SUCCESS;
+}
+
+static bool break_loop(const info_maze_t *infos, rooms_t *room,
+    const int index_room, const int distance)
+{
+    if (room[index_room].distance == DEAD_END)
+        return true;
+    if (index_room == infos->start) {
+        if (room[index_room].distance > distance ||
+            room[index_room].distance == END_LIST) {
+            room[index_room].distance = distance;
+            room[infos->last_index].distance = distance - 1;
         }
+        return true;
+    }
+    if (distance != 0 && index_room == infos->end) {
+        room[infos->end].distance = 0;
+        return true;
+    }
+    return false;
+}
 
-            /*if (rooms[i].links[j] != -1 && rooms[i].links[j + 1] != -1 &&
-                rooms[rooms[i].links[j]].distance < rooms[rooms[i].links[j + 1]].distance) {
-                printf("IF : room : %s\n", rooms[rooms[i].links[j]].name);
-            } else if (rooms[i].links[j + 1] != -1)
-                printf("ELSE : room : %s\n", rooms[rooms[i].links[j + 1]].name);*/
+static void find_distances(info_maze_t *infos, rooms_t *room,
+    int index_room, int distance)
+{
+    if (break_loop(infos, room, index_room, distance))
+        return;
+    for (int i = 0; room[index_room].links[i] != END_LIST; i++) {
+        if (room[index_room].links[i] == infos->last_index)
+            continue;
+        if (room[index_room].distance > distance ||
+            room[index_room].distance == END_LIST)
+            room[index_room].distance = distance;
+        else
+            continue;
+        infos->last_index = index_room;
+        find_distances(infos, room, room[index_room].links[i], distance += 1);
+    }
+}
 
-            //printf("Distance : %d Index : %d\n", rooms[i].distance, i);
-        //}
-    free(rooms);
+int algo_dist(info_maze_t *infos, rooms_t *room,
+    const int index_room, const ssize_t nb_rooms)
+{
+    info_maze_t *cpy = infos;
+
+    if (check_dead_end(cpy, room, nb_rooms) == MAZE_ERROR) {
+        free(infos);
+        return EXIT_ERROR;
+    }
+    find_distances(infos, room, index_room, 0);
+    free(infos);
+    return EXIT_SUCCESS;
 }

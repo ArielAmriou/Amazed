@@ -60,8 +60,9 @@ static int init_matrice(info_t *info)
 
 int end_room(char *line, info_t *info)
 {
-    if (check_rooms(info) == EXIT_ERROR || init_matrice(info) == EXIT_ERROR ||
-        put_tunnels(line, info) == EXIT_ERROR)
+    if (check_rooms(info) == EXIT_ERROR || init_matrice(info) == EXIT_ERROR)
+        return EXIT_ERROR;
+    if (line != NULL && put_tunnels(line, info) == EXIT_ERROR)
         return EXIT_ERROR;
     return EXIT_SUCCESS;
 }
