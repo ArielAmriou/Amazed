@@ -40,8 +40,10 @@ static void find_start_dead_end(rooms_t *room, const int j)
     for (int i = 0; room[j].links[i] != END_LIST; i++) {
         if (room[room[j].links[i]].distance == DEAD_END) {
             dead_end = true;
-        } else
+        } else {
             dead_end = false;
+            break;
+        }
     }
     if (dead_end)
         room[j].distance = DEAD_END;
@@ -113,6 +115,9 @@ int algo_dist(info_maze_t *infos, rooms_t *room,
         return EXIT_ERROR;
     }
     find_distances(infos, room, index_room, 0);
+    for (int i = 0; i < 10; i++) {
+        printf("index : %d, dist : %d\n", i, room[i].distance);
+    }
     free(infos);
     return EXIT_SUCCESS;
 }
