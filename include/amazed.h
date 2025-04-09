@@ -19,6 +19,7 @@
     #define MAZE_ERROR -6
     #define DEAD_END -2
     #define END_LIST -1
+    #define ROOM_ROBOT robot_tabs[index_robot]->index_room
 
 typedef struct info_s info_t;
 typedef struct info_maze_s {
@@ -43,11 +44,10 @@ typedef struct robot_s {
 } robot_t;
 
 //SET ROBOT
-ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots);
-robot_t **init_robot_tab(size_t nb_robots);
-void free_robots(robot_t **robot_tabs, size_t nb_robots, info_t *infos);
-size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots,
-    info_t *info);
+ssize_t set_robot(robot_t **robot_tabs, info_t *info);
+robot_t **init_robot_tab(info_t *info);
+void free_robots(robot_t **robot_tabs, info_t *info);
+size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info);
 //UTILS
 void print_list_int(int *list);
 void print_table(rooms_t *rooms, size_t end);

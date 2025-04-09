@@ -16,7 +16,7 @@ void print_list_int(int *list)
 
 void print_table(rooms_t *rooms, size_t end)
 {
-    for (int i = 0; i < end; i++) {
+    for (size_t i = 0; i < end; i++) {
         mini_printf("ROOM => %s, distance %d, status %d links => ",
             rooms[i].name, rooms[i].distance, rooms[i].occupied);
         print_list_int(rooms[i].links);
