@@ -136,7 +136,7 @@ info_t *get_input(void)
             return NULL;
     }
     free(line);
-    if (type == NONE || type == ROOMS)
+    if (type != TUNNELS)
         return NULL;
     return info;
 }

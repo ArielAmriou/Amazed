@@ -13,13 +13,18 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <string.h>
+    #define UNUSED __attribute__((unused))
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
     #define MAZE_ERROR -6
-    #define DEAD_END -2
     #define END_LIST -1
+    #define NOT_INITIALIZED -1
+    #define DEAD_END -2
+    #define BEGIN_ROOM -3
+    #define ROOM_ROBOT robot_tabs[index_robot]->index_room
 
+typedef struct info_s info_t;
 typedef struct info_maze_s {
     int start;
     int end;
@@ -42,11 +47,10 @@ typedef struct robot_s {
 } robot_t;
 
 //SET ROBOT
-ssize_t set_robot(robot_t **robot_tabs, size_t nb_robots);
-robot_t **init_robot_tab(size_t nb_robots);
-void free_robots(robot_t **robot_tabs, size_t nb_robots);
-
-size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, size_t nb_robots);
+ssize_t set_robot(robot_t **robot_tabs, info_t *info);
+robot_t **init_robot_tab(info_t *info);
+void free_robots(robot_t **robot_tabs, info_t *info);
+size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info);
 //UTILS
 void print_list_int(int *list);
 void print_table(rooms_t *rooms, size_t end);

@@ -132,3 +132,52 @@ Test(amazed, no_links)
 
     cr_assert_not_null(result);
 }
+
+Test(amazed, only_nb_robots)
+{
+    info_t *result = test_main("only_nb_robots");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, labyrinth)
+{
+    info_t *result = test_main("labyrinth");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, file_anto)
+{
+    info_t *result = test_main("file_anto");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, easy)
+{
+    info_t *result = test_main("easy");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, garbage_error)
+{
+    info_t *result = test_main("garbage_error");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, garbage_ok)
+{
+    info_t *result = test_main("garbage_ok");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, empty)
+{
+    info_t *result = test_main("empty");
+
+    cr_assert_null(result);
+}

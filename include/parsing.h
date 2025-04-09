@@ -10,7 +10,6 @@
     #include <stdbool.h>
     #include "linked.h"
     #include "amazed.h"
-
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0

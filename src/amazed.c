@@ -23,8 +23,8 @@ static int init_algo(info_t *info)
     if (algo_dist(maze, info->rooms_list,
         info->id_end, info->rooms->len) == EXIT_ERROR)
         return EXIT_ERROR;
-    robots = init_robot_tab(info->nb_robots);
-    return move_robots(info->rooms_list, robots, info->nb_robots);
+    robots = init_robot_tab(info);
+    return move_robots(info->rooms_list, robots, info);
 }
 
 static int parse_it(void)
