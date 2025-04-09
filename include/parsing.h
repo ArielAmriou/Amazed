@@ -20,6 +20,10 @@
     #define COMMENT_CHAR '#'
     #define START_COMMAND "##start"
     #define END_COMMAND "##end"
+    #define NB_ROBOTS_COM "#number_of_robots\n"
+    #define ROOMS_COM "#rooms\n"
+    #define TUNNELS_COM "#tunnels\n"
+    #define MOVES_COM "#moves\n"
     #define END_IDS -1
 
 typedef enum room_type {
@@ -71,6 +75,10 @@ int create_room_list(info_t *info);
 int put_room_end(char *line, info_t *info);
 int put_room_start(char *line, info_t *info);
 int put_room(char *line, info_t *info);
+int free_line_info(char *line, info_t *info);
+info_t *init_info(void);
+int handle_type(char *line, info_t *info,
+    line_type_t type, line_type_t prev_type);
 
 typedef struct allowed_s {
     line_type_t type;
@@ -85,7 +93,7 @@ static const allowed_t allowed_list[] = {
     {ROOMS, START, &put_room_start},
     {ROOMS, END, &put_room_end},
     {TUNNELS, ROOMS, &end_room},
-    {TUNNELS, TUNNELS, &put_tunnels}
+    {TUNNELS, TUNNELS, &put_tunnels},
 };
 
 #endif

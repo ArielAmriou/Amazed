@@ -22,6 +22,8 @@ SRC = 	$(addprefix src/,						\
 			parsing/put_nb_robot.c				\
 			parsing/put_tunnels.c				\
 			parsing/end_room.c					\
+			parsing/init_info.c					\
+			parsing/handle_type.c				\
 			parsing/create_room_list.c			\
 			move_robots/move_robot.c			\
 			move_robots/set_robots.c			\

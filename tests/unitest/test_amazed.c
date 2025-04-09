@@ -130,7 +130,7 @@ Test(amazed, no_links)
 {
     info_t *result = test_main("no_links");
 
-    cr_assert_not_null(result);
+    cr_assert_null(result);
 }
 
 Test(amazed, only_nb_robots)
@@ -180,4 +180,11 @@ Test(amazed, empty)
     info_t *result = test_main("empty");
 
     cr_assert_null(result);
+}
+
+Test(amazed, garbage_error2)
+{
+    info_t *result = test_main("garbage_error2");
+
+    cr_assert_not_null(result);
 }

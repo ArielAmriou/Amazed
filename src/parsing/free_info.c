@@ -51,3 +51,10 @@ void free_info(info_t *info)
     free(info->name_end);
     free(info);
 }
+
+int free_line_info(char *line, info_t *info)
+{
+    free(line);
+    free_info(info);
+    return EXIT_ERROR;
+}

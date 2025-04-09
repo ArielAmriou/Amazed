@@ -48,18 +48,7 @@ static void change_room(robot_t **robot_tabs,
     }
 }
 
-void get_near_room_unitialised(ssize_t current_index_room, rooms_t *rooms)
-{
-    UNUSED size_t save_distance = BEGIN_ROOM;
-
-    for (size_t i = 0;
-        rooms[current_index_room].links[i] != NOT_INITIALIZED; i++) {
-        return;
-    }
-    return;
-}
-
-void update_room(ssize_t *save_distance, rooms_t *rooms,
+static void update_room(ssize_t *save_distance, rooms_t *rooms,
     ssize_t current_index_room, ssize_t *save_room)
 {
     if (((*save_distance) > rooms[current_index_room].distance ||
