@@ -13,12 +13,15 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <string.h>
+    #define UNUSED __attribute__((unused))
     /* return values */
     #define EXIT_ERROR 84
     #define EXIT_SUCCESS 0
     #define MAZE_ERROR -6
-    #define DEAD_END -2
     #define END_LIST -1
+    #define NOT_INITIALIZED -1
+    #define DEAD_END -2
+    #define BEGIN_ROOM -3
     #define ROOM_ROBOT robot_tabs[index_robot]->index_room
 
 typedef struct info_s info_t;

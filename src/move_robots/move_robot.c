@@ -48,10 +48,34 @@ static void change_room(robot_t **robot_tabs,
     }
 }
 
+void get_near_room_unitialised(ssize_t current_index_room, rooms_t *rooms)
+{
+    UNUSED size_t save_distance = BEGIN_ROOM;
+
+    for (size_t i = 0;
+        rooms[current_index_room].links[i] != NOT_INITIALIZED; i++) {
+        return;
+    }
+    return;
+}
+
+void update_room(ssize_t *save_distance, rooms_t *rooms,
+    ssize_t current_index_room, ssize_t *save_room)
+{
+    if (((*save_distance) > rooms[current_index_room].distance ||
+    (*save_distance) == BEGIN_ROOM)
+    && (!rooms[current_index_room].occupied) &&
+    (rooms[current_index_room].distance != DEAD_END
+        && rooms[current_index_room].distance != NOT_INITIALIZED)) {
+        (*save_distance) = rooms[current_index_room].distance;
+        (*save_room) = current_index_room;
+    }
+}
+
 static void choose_room(robot_t **robot_tabs, size_t index_robot,
     rooms_t *rooms, info_t *info)
 {
-    ssize_t save_distance = -3;
+    ssize_t save_distance = BEGIN_ROOM;
     ssize_t save_room = info->id_start;
     ssize_t current_index_room = 0;
     ssize_t i = 0;
@@ -60,12 +84,7 @@ static void choose_room(robot_t **robot_tabs, size_t index_robot,
         return;
     for (i = 0; rooms[ROOM_ROBOT].links[i] != END_LIST; i++) {
         current_index_room = rooms[ROOM_ROBOT].links[i];
-        if ((save_distance > rooms[current_index_room].distance ||
-            save_distance == -3) && !rooms[current_index_room].occupied &&
-            rooms[current_index_room].distance != -2) {
-                save_distance = rooms[current_index_room].distance;
-                save_room = current_index_room;
-        }
+        update_room(&save_distance, rooms, current_index_room, &save_room);
     }
     rooms[ROOM_ROBOT].occupied = false;
     rooms[save_room].occupied =
