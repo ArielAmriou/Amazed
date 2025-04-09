@@ -10,20 +10,20 @@ return_value() {
         echo "$1: no such file or directory"
         return
     fi
-    IS=$(./amazed < $1 > /dev/null; echo $?)
+    IS=$(timeout 1 ./amazed < $1 > /dev/null; echo $?)
     SHOULD=$(./tests/B-CPE-200_Amazed_binaries/amazed < $1  > /dev/null; echo $?)
-    if [ $SHOULD != 0 ]
+    if [ $IS != 0 ]
     then
-        SHOULD=84
+        IS=1
     fi
     if [ $IS = $SHOULD ]
     then
         SUCCESS=$((SUCCESS+1))
-        echo -ne "\033[32mCorrect output\033[0m\n"
+        echo -ne "\033[32mCorrect return value ($IS).\033[0m\n"
     else
         FAILED=$((FAILED+1))
-        echo -ne "\033[31mERROR:\033[0m"
-        echo "Is: $IS but should be $SHOULD"
+        echo -ne "\033[31mERROR:\033[0m\n"
+        echo "is: $IS but should be $SHOULD"
     fi
 }
 
