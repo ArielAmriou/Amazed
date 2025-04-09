@@ -40,7 +40,6 @@ static void find_start_dead_end(rooms_t *room, const int j)
     for (int i = 0; room[j].links[i] != END_LIST; i++) {
         if (room[room[j].links[i]].distance == DEAD_END) {
             dead_end = true;
-            room[j].distance = DEAD_END;
         } else
             dead_end = false;
     }
