@@ -31,7 +31,7 @@ static void print_robot(robot_t **robot_tabs,
 {
     if (robot_tabs[index_robot]->step != 0 &&
         !robot_tabs[index_robot]->arrived_printed) {
-        mini_printf("P%d-%s ",
+        mini_printf("P%d-%s",
             robot_tabs[index_robot]->robot,
             rooms[robot_tabs[index_robot]->index_room].name);
     }
@@ -55,7 +55,7 @@ static void update_room(ssize_t *save_distance, rooms_t *rooms,
     (*save_distance) == BEGIN_ROOM)
     && (!rooms[current_index_room].occupied) &&
     (rooms[current_index_room].distance != DEAD_END
-        && rooms[current_index_room].distance != NOT_INITIALIZED)) {
+    && rooms[current_index_room].distance != NOT_INITIALIZED)) {
         (*save_distance) = rooms[current_index_room].distance;
         (*save_room) = current_index_room;
     }
@@ -83,21 +83,17 @@ static void choose_room(robot_t **robot_tabs, size_t index_robot,
 
 size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info)
 {
-    int index_robot = 0;
-
     if (!rooms || !robot_tabs)
-        return 84;
+        return EXIT_ERROR;
     while (!is_robot_arrived(robot_tabs)) {
-        index_robot = 0;
-        while (robot_tabs[index_robot]->robot != END_LIST) {
-            choose_room(robot_tabs, index_robot, rooms, info);
-            robot_tabs[index_robot]->arrived =
-                robot_arrived(robot_tabs, index_robot, rooms);
-            print_robot(robot_tabs, index_robot, rooms);
-            index_robot++;
+        for (int i = 0; robot_tabs[i]->robot != END_LIST; i++) {
+            choose_room(robot_tabs, i, rooms, info);
+            robot_tabs[i]->arrived =
+                robot_arrived(robot_tabs, i, rooms);
+            print_robot(robot_tabs, i, rooms);
         }
         mini_printf("\n");
     }
     free_robots(robot_tabs, info);
-    return 0;
+    return EXIT_SUCCESS;
 }

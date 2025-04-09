@@ -72,7 +72,6 @@ static int input_loop(info_t *info, line_type_t types[2])
             return EXIT_ERROR;
         types[1] = types[0];
     }
-    mini_printf(MOVES_COM);
     free(line);
     return EXIT_SUCCESS;
 }
@@ -89,5 +88,6 @@ info_t *get_input(void)
     if ((types[0] != NONE && types[0] != TUNNELS) ||
         (types[0] == NONE && types[1] != TUNNELS))
         return NULL;
+    mini_printf(MOVES_COM);
     return info;
 }
