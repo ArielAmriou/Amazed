@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2025
 ** amazed
 ** File description:
-** move robot
+** move robots
 */
 
 #include "amazed.h"
