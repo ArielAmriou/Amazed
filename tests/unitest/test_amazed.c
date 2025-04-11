@@ -79,153 +79,6 @@ static int test_amazed(const char *file)
     return result;
 }
 
-Test(amazed, comments)
-{
-    info_t *result = test_get_input("comments");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, normal)
-{
-    info_t *result = test_get_input("normal");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, no_start)
-{
-    info_t *result = test_get_input("no_start");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, end_in_tunnels)
-{
-    info_t *result = test_get_input("end_in_tunnels");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, normal2)
-{
-    info_t *result = test_get_input("normal2");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, start_end_close)
-{
-    info_t *result = test_get_input("start_end_close");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, no_tunnels)
-{
-    info_t *result = test_get_input("no_tunnels");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, no_nb_robots)
-{
-    info_t *result = test_get_input("no_nb_robots");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, no_rooms)
-{
-    info_t *result = test_get_input("no_rooms");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, empty_line)
-{
-    info_t *result = test_get_input("empty_line");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, same_co)
-{
-    info_t *result = test_get_input("same_co");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, same_co_and_name)
-{
-    info_t *result = test_get_input("same_co_and_name");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, no_links)
-{
-    info_t *result = test_get_input("no_links");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, only_nb_robots)
-{
-    info_t *result = test_get_input("only_nb_robots");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, labyrinth)
-{
-    info_t *result = test_get_input("labyrinth");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, file_anto)
-{
-    info_t *result = test_get_input("file_anto");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, easy)
-{
-    info_t *result = test_get_input("easy");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, garbage_error)
-{
-    info_t *result = test_get_input("garbage_error");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, garbage_ok)
-{
-    info_t *result = test_get_input("garbage_ok");
-
-    cr_assert_not_null(result);
-}
-
-Test(amazed, empty)
-{
-    info_t *result = test_get_input("empty");
-
-    cr_assert_null(result);
-}
-
-Test(amazed, garbage_error2)
-{
-    info_t *result = test_get_input("garbage_error2");
-
-    cr_assert_not_null(result);
-}
-
 Test(amazed, is_tunnel1)
 {
     cr_assert_eq(is_tunnel("1-2"), true);
@@ -369,4 +222,1040 @@ Test(amazed, end_room2)
     room->y = 12;
     insert_back(info->rooms, room);
     cr_assert_eq(end_room("1-0", info), EXIT_ERROR);
+}
+
+Test(amazed, result_big_ahh_dih)
+{
+    int result = test_amazed("big_ahh_dih");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_big_ahh_dih)
+{
+    info_t *result = test_get_input("big_ahh_dih");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_comments)
+{
+    int result = test_amazed("comments");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_comments)
+{
+    info_t *result = test_get_input("comments");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_double_def_room_name1)
+{
+    int result = test_amazed("double_def_room_name-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_def_room_name1)
+{
+    info_t *result = test_get_input("double_def_room_name-1");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_double_def_room_name2)
+{
+    int result = test_amazed("double_def_room_name-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_def_room_name2)
+{
+    info_t *result = test_get_input("double_def_room_name-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_double_end_command)
+{
+    int result = test_amazed("double_end_command");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_end_command)
+{
+    info_t *result = test_get_input("double_end_command");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_double_end_command2)
+{
+    int result = test_amazed("double_end_command-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_end_command2)
+{
+    info_t *result = test_get_input("double_end_command-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_double_start_command)
+{
+    int result = test_amazed("double_start_command");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_start_command)
+{
+    info_t *result = test_get_input("double_start_command");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_double_start_command2)
+{
+    int result = test_amazed("double_start_command-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_double_start_command2)
+{
+    info_t *result = test_get_input("double_start_command-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_easy)
+{
+    int result = test_amazed("easy");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_easy)
+{
+    info_t *result = test_get_input("easy");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_empty)
+{
+    int result = test_amazed("empty");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty)
+{
+    info_t *result = test_get_input("empty");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_file1)
+{
+    int result = test_amazed("empty_file-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_file1)
+{
+    info_t *result = test_get_input("empty_file-1");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_file2)
+{
+    int result = test_amazed("empty_file-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_file2)
+{
+    info_t *result = test_get_input("empty_file-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_line)
+{
+    int result = test_amazed("empty_line");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_line)
+{
+    info_t *result = test_get_input("empty_line");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_line2)
+{
+    int result = test_amazed("empty_line-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_line2)
+{
+    info_t *result = test_get_input("empty_line-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_line3)
+{
+    int result = test_amazed("empty_line-3");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_line3)
+{
+    info_t *result = test_get_input("empty_line-3");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_empty_line4)
+{
+    int result = test_amazed("empty_line-4");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_empty_line4)
+{
+    info_t *result = test_get_input("empty_line-4");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_end_in_tunnels)
+{
+    int result = test_amazed("end_in_tunnels");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_end_in_tunnels)
+{
+    info_t *result = test_get_input("end_in_tunnels");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_exemple_subject)
+{
+    int result = test_amazed("exemple_subject");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_exemple_subject)
+{
+    info_t *result = test_get_input("exemple_subject");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file1)
+{
+    int result = test_amazed("file-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_file1)
+{
+    info_t *result = test_get_input("file-1");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file10)
+{
+    int result = test_amazed("file-10");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file10)
+{
+    info_t *result = test_get_input("file-10");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file2)
+{
+    int result = test_amazed("file-2");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file2)
+{
+    info_t *result = test_get_input("file-2");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file3)
+{
+    int result = test_amazed("file-3");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file3)
+{
+    info_t *result = test_get_input("file-3");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file4)
+{
+    int result = test_amazed("file-4");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file4)
+{
+    info_t *result = test_get_input("file-4");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file5)
+{
+    int result = test_amazed("file-5");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file5)
+{
+    info_t *result = test_get_input("file-5");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file6)
+{
+    int result = test_amazed("file-6");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file6)
+{
+    info_t *result = test_get_input("file-6");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file7)
+{
+    int result = test_amazed("file-7");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file7)
+{
+    info_t *result = test_get_input("file-7");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file8)
+{
+    int result = test_amazed("file-8");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file8)
+{
+    info_t *result = test_get_input("file-8");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file9)
+{
+    int result = test_amazed("file-9");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file9)
+{
+    info_t *result = test_get_input("file-9");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_file_anto)
+{
+    int result = test_amazed("file_anto");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_file_anto)
+{
+    info_t *result = test_get_input("file_anto");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_full_comment)
+{
+    int result = test_amazed("full_comment");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_full_comment)
+{
+    info_t *result = test_get_input("full_comment");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_garbage_error)
+{
+    int result = test_amazed("garbage_error");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_garbage_error)
+{
+    info_t *result = test_get_input("garbage_error");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_garbage_error2)
+{
+    int result = test_amazed("garbage_error2");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_garbage_error2)
+{
+    info_t *result = test_get_input("garbage_error2");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_garbage_ok)
+{
+    int result = test_amazed("garbage_ok");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_garbage_ok)
+{
+    info_t *result = test_get_input("garbage_ok");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_input_containning_garbage1)
+{
+    int result = test_amazed("input_containning_garbage-1");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_input_containning_garbage1)
+{
+    info_t *result = test_get_input("input_containning_garbage-1");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_input_containning_garbage2)
+{
+    int result = test_amazed("input_containning_garbage-2");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_input_containning_garbage2)
+{
+    info_t *result = test_get_input("input_containning_garbage-2");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_invalid_room_def)
+{
+    int result = test_amazed("invalid_room_def");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def)
+{
+    info_t *result = test_get_input("invalid_room_def");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_invalid_room_def1)
+{
+    int result = test_amazed("invalid_room_def-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def1)
+{
+    info_t *result = test_get_input("invalid_room_def-1");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_invalid_room_def2)
+{
+    int result = test_amazed("invalid_room_def-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def2)
+{
+    info_t *result = test_get_input("invalid_room_def-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_invalid_room_def3)
+{
+    int result = test_amazed("invalid_room_def-3");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def3)
+{
+    info_t *result = test_get_input("invalid_room_def-3");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_invalid_room_def4)
+{
+    int result = test_amazed("invalid_room_def-4");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def4)
+{
+    info_t *result = test_get_input("invalid_room_def-4");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_invalid_room_def5)
+{
+    int result = test_amazed("invalid_room_def-5");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_invalid_room_def5)
+{
+    info_t *result = test_get_input("invalid_room_def-5");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_labyrinth)
+{
+    int result = test_amazed("labyrinth");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_labyrinth)
+{
+    info_t *result = test_get_input("labyrinth");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_missing_coord_y)
+{
+    int result = test_amazed("missing_coord_y");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y)
+{
+    info_t *result = test_get_input("missing_coord_y");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y2)
+{
+    int result = test_amazed("missing_coord_y-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y2)
+{
+    info_t *result = test_get_input("missing_coord_y-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y3)
+{
+    int result = test_amazed("missing_coord_y-3");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y3)
+{
+    info_t *result = test_get_input("missing_coord_y-3");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y4)
+{
+    int result = test_amazed("missing_coord_y-4");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y4)
+{
+    info_t *result = test_get_input("missing_coord_y-4");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y5)
+{
+    int result = test_amazed("missing_coord_y-5");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y5)
+{
+    info_t *result = test_get_input("missing_coord_y-5");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y6)
+{
+    int result = test_amazed("missing_coord_y-6");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y6)
+{
+    info_t *result = test_get_input("missing_coord_y-6");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_coord_y7)
+{
+    int result = test_amazed("missing_coord_y-7");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_coord_y7)
+{
+    info_t *result = test_get_input("missing_coord_y-7");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_end_command)
+{
+    int result = test_amazed("missing_end_command");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_end_command)
+{
+    info_t *result = test_get_input("missing_end_command");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_end_command2)
+{
+    int result = test_amazed("missing_end_command-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_end_command2)
+{
+    info_t *result = test_get_input("missing_end_command-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_start_command)
+{
+    int result = test_amazed("missing_start_command");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_start_command)
+{
+    info_t *result = test_get_input("missing_start_command");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_missing_start_command2)
+{
+    int result = test_amazed("missing_start_command-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_missing_start_command2)
+{
+    info_t *result = test_get_input("missing_start_command-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_links)
+{
+    int result = test_amazed("no_links");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_links)
+{
+    info_t *result = test_get_input("no_links");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_nb_robots)
+{
+    int result = test_amazed("no_nb_robots");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_nb_robots)
+{
+    info_t *result = test_get_input("no_nb_robots");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_path_between_start_end)
+{
+    int result = test_amazed("no_path_between_start_end");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_path_between_start_end)
+{
+    info_t *result = test_get_input("no_path_between_start_end");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_no_path_between_start_end2)
+{
+    int result = test_amazed("no_path_between_start_end-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_path_between_start_end2)
+{
+    info_t *result = test_get_input("no_path_between_start_end-2");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_normal)
+{
+    int result = test_amazed("normal");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_normal)
+{
+    info_t *result = test_get_input("normal");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_normal2)
+{
+    int result = test_amazed("normal2");
+
+    cr_assert_eq(result, 0);
+}
+
+Test(amazed, total_normal2)
+{
+    info_t *result = test_get_input("normal2");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_no_robot_nb1)
+{
+    int result = test_amazed("no_robot_nb-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_robot_nb1)
+{
+    info_t *result = test_get_input("no_robot_nb-1");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_robot_nb2)
+{
+    int result = test_amazed("no_robot_nb-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_robot_nb2)
+{
+    info_t *result = test_get_input("no_robot_nb-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_room_define)
+{
+    int result = test_amazed("no_room_define");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_room_define)
+{
+    info_t *result = test_get_input("no_room_define");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_room_define2)
+{
+    int result = test_amazed("no_room_define-2");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_room_define2)
+{
+    info_t *result = test_get_input("no_room_define-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_rooms)
+{
+    int result = test_amazed("no_rooms");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_rooms)
+{
+    info_t *result = test_get_input("no_rooms");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_start)
+{
+    int result = test_amazed("no_start");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_start)
+{
+    info_t *result = test_get_input("no_start");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_no_start_end_links)
+{
+    int result = test_amazed("no_start_end_links");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_start_end_links)
+{
+    info_t *result = test_get_input("no_start_end_links");
+
+    cr_assert_not_null(result);
+}
+
+Test(amazed, result_no_tunnels)
+{
+    int result = test_amazed("no_tunnels");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_no_tunnels)
+{
+    info_t *result = test_get_input("no_tunnels");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_only_nb_robots)
+{
+    int result = test_amazed("only_nb_robots");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_only_nb_robots)
+{
+    info_t *result = test_get_input("only_nb_robots");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_room_not_exist1)
+{
+    int result = test_amazed("room_not_exist-1");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_room_not_exist1)
+{
+    info_t *result = test_get_input("room_not_exist-1");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_room_not_exist2)
+{
+    info_t *result = test_get_input("room_not_exist-2");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_room_not_exist3)
+{
+    info_t *result = test_get_input("room_not_exist-3");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_room_not_exist4)
+{
+    int result = test_amazed("room_not_exist-4");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed, total_room_not_exist4)
+{
+    info_t *result = test_get_input("room_not_exist-4");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_room_not_exist5)
+{
+    info_t *result = test_get_input("room_not_exist-5");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_room_not_exist6)
+{
+    info_t *result = test_get_input("room_not_exist-6");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_same_co)
+{
+    info_t *result = test_get_input("same_co");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, total_same_co_and_name)
+{
+    info_t *result = test_get_input("same_co_and_name");
+
+    cr_assert_null(result);
+}
+
+Test(amazed, result_start_end_close)
+{
+    int result = test_amazed("start_end_close");
+
+    cr_assert_eq(result, 84);
+}
+
+Test(amazed,al_start_end_close)
+{
+    info_t *result = test_get_input("start_end_close");
+
+    cr_assert_null(result);
 }
