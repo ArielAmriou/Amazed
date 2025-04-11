@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2025
 ** amazed
 ** File description:
-** move robot
+** move robots
 */
 
 #include "amazed.h"
@@ -31,7 +31,7 @@ static void print_robot(robot_t **robot_tabs,
 {
     if (robot_tabs[index_robot]->step != 0 &&
         !robot_tabs[index_robot]->arrived_printed) {
-        mini_printf("P%d-%s",
+        mini_printf("P%d-%s ",
             robot_tabs[index_robot]->robot,
             rooms[robot_tabs[index_robot]->index_room].name);
     }
@@ -48,14 +48,25 @@ static void change_room(robot_t **robot_tabs,
     }
 }
 
-static void update_room(ssize_t *save_distance, rooms_t *rooms,
+void get_near_room_unitialised(ssize_t current_index_room, rooms_t *rooms)
+{
+    UNUSED size_t save_distance = BEGIN_ROOM;
+
+    for (size_t i = 0;
+        rooms[current_index_room].links[i] != NOT_INITIALIZED; i++) {
+        return;
+    }
+    return;
+}
+
+void update_room(ssize_t *save_distance, rooms_t *rooms,
     ssize_t current_index_room, ssize_t *save_room)
 {
     if (((*save_distance) > rooms[current_index_room].distance ||
     (*save_distance) == BEGIN_ROOM)
     && (!rooms[current_index_room].occupied) &&
     (rooms[current_index_room].distance != DEAD_END
-    && rooms[current_index_room].distance != NOT_INITIALIZED)) {
+        && rooms[current_index_room].distance != NOT_INITIALIZED)) {
         (*save_distance) = rooms[current_index_room].distance;
         (*save_room) = current_index_room;
     }
@@ -81,19 +92,40 @@ static void choose_room(robot_t **robot_tabs, size_t index_robot,
     change_room(robot_tabs, index_robot, save_room);
 }
 
+static bool is_valid(rooms_t *rooms, info_t *info)
+{
+    int verif = 0;
+
+    for (size_t j = 0; rooms[info->id_start].links[j] != END_LIST; j++) {
+        if (rooms[rooms[info->id_start].links[j]].distance > 0)
+            verif += rooms[rooms[info->id_start].links[j]].distance;
+    }
+    if (verif <= 0) {
+        mini_printf("There is no valid path from start to exit\n");
+        return false;
+    }
+    return true;
+}
+
 size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info)
 {
-    if (!rooms || !robot_tabs)
-        return EXIT_ERROR;
+    int index_robot = 0;
+
+    if (!rooms || !robot_tabs || !is_valid(rooms, info)) {
+        free_robots(robot_tabs, info);
+        return 84;
+    }
     while (!is_robot_arrived(robot_tabs)) {
-        for (int i = 0; robot_tabs[i]->robot != END_LIST; i++) {
-            choose_room(robot_tabs, i, rooms, info);
-            robot_tabs[i]->arrived =
-                robot_arrived(robot_tabs, i, rooms);
-            print_robot(robot_tabs, i, rooms);
+        index_robot = 0;
+        while (robot_tabs[index_robot]->robot != END_LIST) {
+            choose_room(robot_tabs, index_robot, rooms, info);
+            robot_tabs[index_robot]->arrived =
+                robot_arrived(robot_tabs, index_robot, rooms);
+            print_robot(robot_tabs, index_robot, rooms);
+            index_robot++;
         }
         mini_printf("\n");
     }
     free_robots(robot_tabs, info);
-    return EXIT_SUCCESS;
+    return 0;
 }

@@ -155,10 +155,7 @@ jobs:
         timeout-minutes: 2
         run: |
           make tests_run
-          if [ "$(make tests ; echo $?)" != "0" ]
-          then
-            exit 1
-          fi
+          make tests
 
   push_to_mirror:
     name: Push to mirror
