@@ -92,7 +92,8 @@ static void find_distances(info_maze_t *infos, rooms_t *room,
 {
     for (int i = 0; room[index_room].links[i] != END_LIST; i++) {
         if (room[index_room].links[i] == infos->last_index ||
-            room[index_room].links[i] == index_room)
+            room[index_room].links[i] == index_room ||
+            room[room[index_room].links[i]].distance == DEAD_END)
             continue;
         if (room[index_room].distance > distance ||
             room[index_room].distance == END_LIST)

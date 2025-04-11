@@ -97,8 +97,8 @@ static bool is_valid(rooms_t *rooms, info_t *info)
     int verif = 0;
 
     for (size_t j = 0; rooms[info->id_start].links[j] != END_LIST; j++) {
-        if (rooms[rooms[info->id_start].links[j]].distance > 0)
-            verif += rooms[rooms[info->id_start].links[j]].distance;
+        if (rooms[rooms[info->id_start].links[j]].distance >= 0)
+            verif += 1;
     }
     if (verif <= 0) {
         mini_printf("There is no valid path from start to exit\n");
