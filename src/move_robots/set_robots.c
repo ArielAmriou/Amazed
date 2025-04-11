@@ -16,7 +16,7 @@ ssize_t set_robot(robot_t **robot_tabs, info_t *info)
     while (i < info->nb_robots) {
         robot_tabs[i] = malloc(sizeof(robot_t));
         if (!robot_tabs[i])
-            return -1;
+            return END_LIST;
         robot_tabs[i]->robot = (i + 1);
         robot_tabs[i]->index_room = info->id_start;
         robot_tabs[i]->arrived = false;
