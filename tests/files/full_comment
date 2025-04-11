@@ -1,0 +1,24 @@
+# comment
+10
+##end
+0 63 36
+1 32 56
+# comment
+2 0 44
+##start
+3 19 22 # comment
+4 54 56
+5 88 # comment
+6 60 48 # comment
+7 19 12
+8 34 # comment
+9 82 75
+# comment
+0-3
+0-5
+1-2
+2-8
+3-3
+6-9
+8-7
+# comment

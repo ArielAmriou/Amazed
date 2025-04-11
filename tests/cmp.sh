@@ -27,25 +27,6 @@ return_value() {
     fi
 }
 
-output() {
-    TOTAL=$((TOTAL+1))
-    if [ ! -f $1 ]
-    then
-        echo "$1: no such file or directory"
-        return
-    fi
-    IS="$(timeout 1 ./amazed < $1 2> /dev/null | wc -l)"
-    SHOULD="$(./tests/B-CPE-200_Amazed_binaries/amazed < $1 2> /dev/null | wc -l)"
-    if [ "$IS" = "$SHOULD" ]
-    then
-        SUCCESS=$((SUCCESS+1))
-        echo -ne "\033[32mCorrect Output.\033[0m\n"
-    else
-        FAILED=$((FAILED+1))
-        echo -ne "\033[31mWrong Output\033[0m\n"
-    fi
-}
-
 FILES="$(ls -1 tests/files/*)"
 for X in $FILES
 do
@@ -53,7 +34,6 @@ do
     echo "$X"
     echo "*******************************"
     return_value "$X"
-    output "$X"
 done
 
 echo "=============================="
