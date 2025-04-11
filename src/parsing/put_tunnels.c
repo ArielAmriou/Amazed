@@ -48,6 +48,8 @@ int put_tunnels(char *line, info_t *info)
 
     if (fill_indexes(rooms, line, info) == EXIT_ERROR)
         return EXIT_ERROR;
+    if (rooms[0] == rooms[1])
+        return EXIT_SUCCESS;
     info->matrice[rooms[0]][rooms[1]] = 1;
     info->matrice[rooms[1]][rooms[0]] = 1;
     return EXIT_SUCCESS;
