@@ -100,7 +100,7 @@ static bool is_valid(rooms_t *rooms, info_t *info)
             verif += 1;
     }
     if (verif <= 0) {
-        mini_printf_error("There is no valid path from start to exit\n");
+        mini_printf_error("There is no valid path from start to exit.\n");
         return false;
     }
     return true;
