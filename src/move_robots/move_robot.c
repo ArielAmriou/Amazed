@@ -56,7 +56,6 @@ void get_near_room_unitialised(ssize_t current_index_room, rooms_t *rooms)
         rooms[current_index_room].links[i] != NOT_INITIALIZED; i++) {
         return;
     }
-    return;
 }
 
 void update_room(ssize_t *save_distance, rooms_t *rooms,
@@ -113,7 +112,7 @@ size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info)
 
     if (!rooms || !robot_tabs || !is_valid(rooms, info)) {
         free_robots(robot_tabs, info);
-        return 84;
+        return EXIT_ERROR;
     }
     while (!is_robot_arrived(robot_tabs)) {
         index_robot = 0;
@@ -127,5 +126,5 @@ size_t move_robots(rooms_t *rooms, robot_t **robot_tabs, info_t *info)
         mini_printf("\n");
     }
     free_robots(robot_tabs, info);
-    return 0;
+    return EXIT_SUCCESS;
 }
