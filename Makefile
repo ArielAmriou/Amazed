@@ -59,8 +59,8 @@ $(NAME):	$(OBJ)
 debug: CFLAGS += -g3
 debug: fclean $(OBJ)
 	make -C $(LIBMY_PATH) CFLAGS+=-g3
-	make -C lib/linked CFLAGS+=-g3
-	$(CC) -o $(NAME) $(OBJ) $(LIB)
+	make -C $(LINKED_PATH) CFLAGS+=-g3
+	$(CC) -o $(NAME) $(OBJ) $(LDLIBS)
 
 $(TESTS): LDLIBS += -lcriterion
 $(TESTS): LDFLAGS += --coverage

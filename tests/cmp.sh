@@ -34,8 +34,8 @@ output() {
         echo "$1: no such file or directory"
         return
     fi
-    IS="$(timeout 1 ./amazed < $1 2> /dev/null | wc)"
-    SHOULD="$(./tests/B-CPE-200_Amazed_binaries/amazed < $1 2> /dev/null | wc)"
+    IS="$(timeout 1 ./amazed < $1 2> /dev/null | wc -l)"
+    SHOULD="$(./tests/B-CPE-200_Amazed_binaries/amazed < $1 2> /dev/null | wc -l)"
     if [ "$IS" = "$SHOULD" ]
     then
         SUCCESS=$((SUCCESS+1))
